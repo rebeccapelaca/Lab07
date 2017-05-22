@@ -7,6 +7,7 @@ import org.jgrapht.Graphs;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.traverse.BreadthFirstIterator;
 
 import it.polito.tdp.dizionario.db.WordDAO;
 
@@ -55,5 +56,33 @@ public class Model {
 		risultato += "Grado massimo: \n" + verticeMax + " : " + max + "\n";
 		
 		return risultato;
+	}
+	
+	public List<String> trovaTuttiVicini(String verticePartenza) {
+		
+		List<String> visited = new ArrayList<String>();
+		List<String> daVisitare = new ArrayList<String>();
+		
+		/*
+		BreadthFirstIterator<String, DefaultEdge> bfv = new BreadthFirstIterator<>(graph, verticePartenza);
+		
+		while(bfv.hasNext()) {
+			visited.add(bfv.next());
+		}
+		*/
+		
+		daVisitare.add(verticePartenza);
+		
+		while(daVisitare.size()>0) { 
+			
+			for(String vicino : this.displayNeighbours(daVisitare.get(0))) 
+				if(!visited.contains(vicino) && !daVisitare.contains(vicino))
+					daVisitare.add(vicino);
+			
+			visited.add(daVisitare.get(0));
+			daVisitare.remove(daVisitare.get(0));	
+		}
+		
+		return visited;
 	}
 }
